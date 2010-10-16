@@ -1,0 +1,47 @@
+/*****| STRUCTURES |*****/
+
+// comment
+{ id: 1, text: "This is something" }
+
+// card
+{ id: 1, description: "sanitize input", estimate: 2, comments: [ comment ] }
+
+// lane
+{ id: 1, name: "QA", description: "This lane is for cards that need qa", cards: [ card ] }
+
+// sprint
+{ id: 1, name: "Sprint 432", swim_lanes: [ lane ] }
+
+
+/*****| API |*****/
+
+// SPRINTS
+// get /sprint/:id
+sprint
+
+// post { name: String } -> /sprint/:id
+// post { name: String } -> /sprint/new
+sprint
+
+// SWIM LANES
+// get /sprint/:id/swim_lane/:swim_lane_id
+lane
+
+// post { position: Integer, name: String, description: String } -> /sprint/:id/swim_lane/:swim_lane_id
+// post { position: Integer, name: String, description: String } -> /sprint/:id/swim_lane/new
+sprint
+
+// CARD
+// get /sprint/:id/swim_lane/:swim_lane_id/card/:card_id
+card
+
+// post { description: String, estimate: Integer } -> /sprint/:id/swim_lane/:swim_lane_id/card/:card_id
+// post { description: String, estimate: Integer } -> /sprint/:id/swim_lane/:swim_lane_id/card/new
+sprint
+
+// CARD
+// get /sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments
+[ comments ]
+
+// post { text: Text } -> /sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments/new
+comment
