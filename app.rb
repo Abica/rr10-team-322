@@ -108,6 +108,25 @@ end
 include OhKanban::Models
 
 helpers do
+  def comment
+    { :id => 1, :text => "This is something" }
+  end
+
+  def card
+    { :id => 1, :description => "sanitize input", :estimate => 2, :comments => [ comment ] }
+  end
+
+  def lane
+    { :id => 1, :name => "QA", :description => "This lane is for cards that need qa", :cards => [ card ] }
+  end
+
+  def sprint
+    { :id => 1, :name => "Sprint 432", :swim_lanes => [ lane ] }
+  end
+
+  def json( obj )
+    obj.to_json
+  end
 end
 
 get '/' do
@@ -116,41 +135,74 @@ end
 
 # SPRINTS
 get '/sprint/:id' do
+  content_type :json
+
+  json sprint
 end
 
 post '/sprint/:id' do
+  content_type :json
+
+  json sprint
 end
 
 post '/sprint/new' do
+  content_type :json
+
+  json sprint
 end
 
 # SWIM LANES
 get '/sprint/:id/swim_lane/:swim_lane_id' do
+  content_type :json
+
+  json lane
 end
 
 post '/sprint/:id/swim_lane/:swim_lane_id' do
+  content_type :json
+
+  json lane
 end
 
 post '/sprint/:id/swim_lane/new' do
+  content_type :json
+
+  json lane
 end
+
 
 # CARD
 get '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
+  content_type :json
+
+  json card
 end
 
 post '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
+  content_type :json
+
+  json card
 end
 
 post '/sprint/:id/swim_lane/:swim_lane_id/card/new' do
+  content_type :json
+
+  json card
 end
 
-# COMMENT
+# COMMENTS
 get '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments' do
+  content_type :json
+
+  json [ comment ]
 end
 
 post '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments/new' do
-end
+  content_type :json
 
+  json comment
+end
 
 get '/main.css' do
   content_type 'text/css', :charset => 'utf-8'
