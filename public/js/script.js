@@ -35,15 +35,22 @@ $(function() {
         );
     });
     $('.card').live('click', function() {
+        var el = $(this);
         $.fancybox(
             $('.card-detail'), { scrolling: 'no' }
         );
-        $('.card-detail .description').val($(this).html());
+        $('.card-detail .description').val(el.html());
         $('.card-detail .save').click(function() {
             // TODO: ajax
+            el.html($('.card-detail .description').val());
+            $.fancybox.close();
         });
         $('.card-detail .delete').click(function() {
             // TODO: ajax
+            el.fadeOut('fast', function() {
+                el.remove(); 
+            });
+            $.fancybox.close();
         });
     });
 });
