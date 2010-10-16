@@ -30,5 +30,9 @@ end
 
 get '/main.css' do
   content_type 'text/css', :charset => 'utf-8'
-  sass :stylesheet
+  sass :stylesheet, :syntax => :scss
+end
+
+get '/test' do
+  haml :test, :layout => true
 end
