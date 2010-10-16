@@ -4,7 +4,7 @@
     %meta{:charset => "utf-8"}/
     /[if IE]
     /
-    %title
+    %title Oh, Kanban!
     %meta{:content => "", :name => "description"}/
     %meta{:content => "", :name => "author"}/
     %link{:href => "css/reset.css?v=1", :rel => "stylesheet"}/
@@ -21,10 +21,22 @@
   / [if (gt IE 9)|!(IE)]><!
   %body
     / <![endif]>
-    #container
+    .container_16
       %header
+        %h1
+          Oh,&nbsp;
+          %strong> Kanban
+          !
+        = haml(:_buttons, :layout => false)
       #main
         =yield
       %footer
+        Created by 
+        %a{:href => "http://nicholaswright.org"} Nicholas Wright
+        and
+        %a{:href => "http://johnsonpage.org"} Johnson Page
+        for the
+        %a{:href => "http://railsrumble.com"} Rails Rumble
+        2010
     %script{:src => "js/jquery-1.4.2.min.js?v=1"}
     %script{:src => "js/script.js?v=1"}
