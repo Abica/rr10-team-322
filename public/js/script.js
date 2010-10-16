@@ -10,7 +10,7 @@ $(function() {
     $('.cardwall td').droppable({
         drop: function(event, ui) {
             var el = $(ui.draggable).clone();
-            $(this).html(el);
+            $(this).append(el);
             el.removeClass('ui-draggable-dragging')
               .removeClass('ui-draggable')
               .css('top', 0)
