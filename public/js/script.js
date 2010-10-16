@@ -34,4 +34,16 @@ $(function() {
             $('<div/>').addClass('lane-title').html($(this).val())
         );
     });
+    $('.card').live('click', function() {
+        $.fancybox(
+            $('.card-detail'), { scrolling: 'no' }
+        );
+        $('.card-detail .description').val($(this).html());
+        $('.card-detail .save').click(function() {
+            // TODO: ajax
+        });
+        $('.card-detail .delete').click(function() {
+            // TODO: ajax
+        });
+    });
 });
