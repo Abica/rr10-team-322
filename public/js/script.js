@@ -3,12 +3,21 @@ $(function() {
     
     dragOptions = {
         revert: 'invalid',
-        snap: '.cardwall td',
-        snapMode: 'inner'
     };
-    $('.card').draggable(dragOptions);
+    $('.card').live('mouseover', function() {
+        $(this).draggable(dragOptions);
+    });
     $('.cardwall td').droppable({
         drop: function(event, ui) {
+            var el = $(ui.draggable).clone();
+            $(this).html(el);
+            el.removeClass('ui-draggable-dragging')
+              .removeClass('ui-draggable')
+              .css('top', 0)
+              .css('left', 0)
+              .css('position', 'static')
+              .draggable(dragOptions);
+            $(ui.draggable).remove();
         }
     });
 });
