@@ -1,6 +1,6 @@
 $(function() {
     $('tr td:last-child, tr th:last-child').addClass('last');
-    
+     
     dragOptions = {
         revert: 'invalid',
     };
@@ -19,5 +19,19 @@ $(function() {
               .draggable(dragOptions);
             $(ui.draggable).remove();
         }
+    });
+
+    $('.lane-title').live('click', function() {
+        var el = $('<input/>').attr('type', 'text')
+                     .addClass('lane-title-edit')
+                     .val($(this).html())
+        $(this).replaceWith(el);
+        el.focus();
+    });
+    $('.lane-title-edit').live('blur', function() {
+        // TODO: ajax
+        $(this).replaceWith(
+            $('<div/>').addClass('lane-title').html($(this).val())
+        );
     });
 });
