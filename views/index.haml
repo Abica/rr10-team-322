@@ -1,17 +1,18 @@
-#intro
-  %p
-    You've reached an interactive and easy to use take on a
-    %a{:href => "http://en.wikipedia.org/wiki/Kanban"}Kanban
-    card wall that was written for the
-    %a{:href => "http://railsrumble.com"}RailsRumble
-    48 hour code competition.
-  %p
-    Simply create cards in your backlog that express your units of work in a 1 or 2 sentences.
-    As cards are progress through their lifecycle, they are dragged through swim lanes to represent their current state.
-  %p
-    When a card is completed, a new one should be pulled out of the backlog and into the current sprint. You can move cards between sprints by putting them in the backlog.
-%form{:action => "/account", :method => "post"}
-  %button{:type => "submit", :class => "create-sandbox"} Create A Sandbox
+#textpage
+  #intro
+    %p
+      You've reached an interactive and easy to use take on a
+      %a{:href => "http://en.wikipedia.org/wiki/Kanban"}Kanban
+      card wall that was written for the
+      %a{:href => "http://railsrumble.com"}RailsRumble
+      48 hour code competition.
+    %p
+      Simply create cards in your backlog that express your units of work in a 1 or 2 sentences.
+      As cards are progress through their lifecycle, they are dragged through swim lanes to represent their current state.
+    %p
+      When a card is completed, a new one should be pulled out of the backlog and into the current sprint. You can move cards between sprints by putting them in the backlog.
+  %form{:action => "/account", :method => "post"}
+    %button{:type => "submit", :class => "create-sandbox"} Create A Sandbox
 
 %script{type => "text/javascript"}
   var rumbleUrl = 'http://rumbl.in/g/contested-creativity';

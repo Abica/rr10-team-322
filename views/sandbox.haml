@@ -35,6 +35,11 @@
               %button.card_delete Delete
               .content= card.description
 
+.clear &nbsp;
+#private
+  Don't forget your private <strong>ohkanban</strong> URL:
+  %a{:href => "/"+@account.uuid}= "http://ohkanban.com/"+@account.uuid
+
 #skeletons
   .card-new.popup
     %textarea.description{:maxlength => 140}
