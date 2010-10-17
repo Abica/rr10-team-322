@@ -63,13 +63,13 @@ $(function() {
         $.fancybox($('.sprint-new'));
     });
     $('.sprint-new .save').click(function() {
-        var post = { card_wall: {
-            name: $('.sprint_new .name').val(),
+        var post = { sprint: {
+            name: $('.sprint-new .name').val(),
             description: ''
         }};
         $.post('/'+UUID+'/sprint', post, function(data) {
-            $("<button/>").html($('.sprint-new .name')
-                          .val())
+            $("<button/>").html($('.sprint-new .name').val())
+                          .attr('id', 'switch-sprint-'+data.id)
                           .insertBefore('nav .add');
             $.fancybox.close();
         });
