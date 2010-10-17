@@ -199,12 +199,15 @@ $(function() {
         var cardId = extractId($(this).parent().parent());
         var description = $(this).val();
         $.post("/" + UUID + "/card/" + cardId, {card: {description: description}});
+        if(description.length == 0) {
+            description = "&nbsp;";
+        }
         $(this).parent().html(description);
     });
     $('.card .content').live('click', function() {
         var el = $(this);
         var text = $("<textarea></textarea>").val(el.html());
         el.html(text);
-        text.focus().select();
+        text.focus().select().autoResize();
     });
 });
