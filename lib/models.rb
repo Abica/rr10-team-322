@@ -57,7 +57,7 @@ class Card
   PRIORITIES = { :regular => 0, :expedited => 1 }
 
   property :id, Serial
-  property :description, Text, :length => 0..140
+  property :description, Text, :length => 0..240
   property :estimate, Integer
   property :priority, Integer, :default => PRIORITIES[ :regular ]
   property :created_at, DateTime, :default => lambda { Time.now }

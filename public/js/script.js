@@ -120,26 +120,28 @@ $(function() {
     $('.card-new .cancel').click($.fancybox.close);
     $('.card-new .save').click(function() {
         var description = $('.card-new .description').val();
-        $.post("/" + UUID + "/card", {card: {description: description}});
-
         var el = $("<div/>").addClass("card")
                             .html(description);
         $('#backlog .backlog-box').append(el);
+        $.post("/" + UUID + "/card", {card: {description: description}});
+
         $.fancybox.close();
     });
     /** end backlog */
 
     $('.card').live('click', function() {
         var el = $(this);
+        var cardId = extractId(el);
         $.fancybox($('.card-detail'));
         $('.card-detail .description').val(el.html());
         $('.card-detail .save').unbind('click').click(function() {
-            // TODO: ajax
-            el.html($('.card-detail .description').val());
+            var description = $('.card-detail .description').val();
+            el.html(description);
+            $.post("/" + UUID + "/card/" + cardId, {card: {description: description}});
             $.fancybox.close();
         });
         $('.card-detail .delete').unbind('click').click(function() {
-            // TODO: ajax
+            $.ajax({ type: "DELETE", url: "/" + UUID + "/card/" + cardId });
             el.fadeOut('fast', function() {
                 el.remove();
             });

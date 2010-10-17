@@ -177,7 +177,7 @@ end
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card = account.cards.get( params[ :id ] )
+    card = Card.get( params[ :card_id ] )
     card.update( params[ :card ] )
 
     json card
@@ -217,7 +217,7 @@ end
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card = account.cards.get( params[ :id ] )
+    card = Card.get( params[ :id ] )
 
     json card.destroy
   end

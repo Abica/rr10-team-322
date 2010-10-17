@@ -31,11 +31,11 @@
 
 #skeletons
   .card-detail.popup
-    %textarea.description
+    %textarea.description{:maxlength => 140}
     %button.save Save
     %button.delete Delete
   .card-new.popup
-    %textarea.description
+    %textarea.description{:maxlength => 140}
     %button.save Save
     %button.cancel Cancel
   .sprint-new.popup
