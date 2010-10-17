@@ -5,10 +5,7 @@ $(function() {
     dragOptions = {
         revert: 'invalid',
     };
-    $('.card').live('mouseover', function() {
-        $(this).draggable(dragOptions);
-    });
-    $('.cardwall td, .backlog-box').droppable({
+    dropOptions = {
         drop: function(event, ui) {
             var el = $(ui.draggable).clone();
             $(this).append(el);
@@ -20,14 +17,32 @@ $(function() {
               .draggable(dragOptions);
             $(ui.draggable).remove();
         }
+    };
+    $('.card').live('mouseover', function() {
+        $(this).draggable(dragOptions);
     });
+    $('.cardwall td, .backlog-box').droppable(dropOptions);
     /** end drag drop */
+
+    /** sprint management */
+    $('nav .add').live('click', function() {
+        $.fancybox($('.sprint-new'));
+    });
+    $('.sprint-new .save').click(function() {
+        $("<button/>").html($('.sprint-new .name')
+                      .val())
+                      .insertBefore('nav .add');
+        $.fancybox.close();
+    });
+    $('.sprint-new .cancel').click($.fancybox.close);
+    /** end sprint management */
 
     /** lane management */
     $('.about-cardwall .add').live('click', function() {
         var el = $("<th><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
         $('.cardwall tr:first').prepend(el);
-        $('.cardwall tr:not(:first)').prepend("<td/>");
+        $('.cardwall tr:not(:first)').prepend("<td/>").droppable(dropOptions);
+        el.droppable(dropOptions);
     });
     $('.cardwall th .delete').live('click', function() {
         var col = 0;
