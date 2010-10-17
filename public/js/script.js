@@ -18,6 +18,17 @@ $(function() {
               .css('position', 'absolute')
 
             return el;
+        },
+        stop: function(e, ui) {
+            var el = $(e.target);
+            el.removeClass('ui-draggable-dragging')
+                      .removeClass('ui-draggable')
+                      .css('top', 'auto')
+                      .css('left', 'auto')
+                      .css('position', 'static')
+                      .css('width', 'auto')
+                      .draggable(dragOptions);
+         
         }
     };
     dropOptions = {
