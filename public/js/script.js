@@ -31,7 +31,7 @@ $(function() {
                       .css('position', 'relative')
                       .css('width', 'auto')
                       .draggable(dragOptions);
-         
+
         }
     };
     dropOptions = {
@@ -83,8 +83,8 @@ $(function() {
         }
     });
     $('.about-cardwall .remove').live('click', function() {
-        $.ajax({ 
-            type: "DELETE", 
+        $.ajax({
+            type: "DELETE",
             url: "/" + UUID + "/sprint/" + extractId('.about-cardwall'),
             success: function(data) {
                 window.location = '/'+UUID;
@@ -117,7 +117,7 @@ $(function() {
         }};
         $.post('/'+UUID+'/sprint/'+sprint_id+'/swim_lane', post,
         function(data) {
-            
+
             var el = $("<th id='header-swim-lane-"+data.id+"'><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
             $('.cardwall tr:first').append(el);
             $('.cardwall tr:not(:first)').each(function(i, v) {
@@ -216,7 +216,7 @@ $(function() {
     });
     $('.card .content').live('click', function() {
         var el = $(this);
-        var text = $("<textarea></textarea>").val(el.html());
+        var text = $("<textarea maxlength='140'></textarea>").val(el.html());
         el.html(text);
         text.focus().select().autoResize();
     });
