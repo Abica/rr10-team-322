@@ -40,7 +40,7 @@ end
     backlog = account.backlog
     backlog.cards.create( :description => "I am a card in the backlog" )
     backlog.cards.create( :description => "New cards are added to the backlog" )
-    backlog.cards.create( :description => "Move cards into an out of the current sprint" )
+    backlog.cards.create( :description => "The backlog is visible across sprints" )
 
     card_wall = account.card_walls.create( :name => "Sprint 1" )
 
@@ -201,12 +201,12 @@ end
   end
 
   get '/test' do
-    haml :test, :layout => true
+    redirect "/"
   end
 
   get '/:uuid' do
     @account = Account.by_uuid( params[ :uuid ] )
     @backlog = @account.backlog
     @card_wall = @account.card_walls.first or []
-    haml :test, :layout => true
+    haml :sandbox, :layout => true
   end
