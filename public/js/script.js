@@ -52,12 +52,12 @@ $(function() {
         var el = $(this);
         $.fancybox($('.card-detail'));
         $('.card-detail .description').val(el.html());
-        $('.card-detail .save').click(function() {
+        $('.card-detail .save').unbind('click').click(function() {
             // TODO: ajax
             el.html($('.card-detail .description').val());
             $.fancybox.close();
         });
-        $('.card-detail .delete').click(function() {
+        $('.card-detail .delete').unbind('click').click(function() {
             // TODO: ajax
             el.fadeOut('fast', function() {
                 el.remove(); 
