@@ -34,11 +34,20 @@ $(function() {
             $('<div/>').addClass('lane-title').html($(this).val())
         );
     });
+    $('#backlog .add').live('click', function() {
+        $.fancybox($('.card-new'));
+        $('.card-new .save').click(function() {
+            // TODO: ajax
+            var el = $("<div/>").addClass("card")
+                                .html($('.card-new .description').val());
+            $('#backlog .backlog-box').append(el);
+            $.fancybox.close();
+        });
+        $('.card-new .cancel').click($.fancybox.close);
+    });
     $('.card').live('click', function() {
         var el = $(this);
-        $.fancybox(
-            $('.card-detail'), { scrolling: 'no' }
-        );
+        $.fancybox($('.card-detail'));
         $('.card-detail .description').val(el.html());
         $('.card-detail .save').click(function() {
             // TODO: ajax
