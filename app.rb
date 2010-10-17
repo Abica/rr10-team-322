@@ -235,8 +235,16 @@ end
   end
 
   # show sandbox
+  #
+  get '/err' do
+    haml :'500'
+  end
+
   get '/:uuid' do
     @account = Account.by_uuid( params[ :uuid ] )
+    if (!@account)
+      return haml :'404'
+    end
     @backlog = @account.backlog
     @card_wall = @account.card_walls.first || []
     haml :sandbox, :layout => true
@@ -244,7 +252,11 @@ end
 
   get '/:uuid/show/:sprint_id' do
     @account = Account.by_uuid( params[ :uuid ] )
+    if (!@account)
+      return haml :'404'
+    end
     @backlog = @account.backlog
     @card_wall = @account.card_walls.get( params[ :sprint_id ] ) || []
     haml :sandbox, :layout => true
   end
+  
