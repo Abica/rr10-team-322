@@ -47,7 +47,6 @@ $(function() {
               .css('width', 'auto')
               .draggable(dragOptions);
             $(ui.draggable).remove();
-            console.log("SDSDDS");
         }
     };
     $('.card').live('mouseover', function() {
@@ -64,10 +63,16 @@ $(function() {
         $.fancybox($('.sprint-new'));
     });
     $('.sprint-new .save').click(function() {
-        $("<button/>").html($('.sprint-new .name')
-                      .val())
-                      .insertBefore('nav .add');
-        $.fancybox.close();
+        var post = { card_wall: {
+            name: $('.sprint_new .name').val(),
+            description: ''
+        }};
+        $.post('/'+UUID+'/sprint', post, function(data) {
+            $("<button/>").html($('.sprint-new .name')
+                          .val())
+                          .insertBefore('nav .add');
+            $.fancybox.close();
+        });
     });
     $('.sprint-new .cancel').click($.fancybox.close);
     /** end sprint management */
@@ -86,7 +91,16 @@ $(function() {
             
             var el = $("<th id='header-swim-lane-"+data.id+"'><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
             $('.cardwall tr:first').append(el);
-            $('.cardwall tr:not(:first)').append("<td/>").droppable(dropOptions);
+            $('.cardwall tr:not(:first)').each(function(i, v) {
+                var td = $("<td />");
+                if(i == 0) {
+                    td.attr("id", "expedited-swim-lane-"+data.id);
+                } else {
+                    td.attr("id", "regular-swim-lane-"+data.id);
+                }
+                $(v).append(td);
+                td.droppable(dropOptions);
+            });
             $(window).scrollLeft(9999);
             el.droppable(dropOptions);
             $('tr td, tr th').removeClass('last');
@@ -101,8 +115,6 @@ $(function() {
         $.ajax({ type: "DELETE", url: "/" + UUID + "/swim_lane/" + laneId });
 
         $('.cardwall th').each(function(i, el) {
-            console.debug(el);
-            console.debug(column);
             if(el == column) {
                 col = i+1;
                 return false;
