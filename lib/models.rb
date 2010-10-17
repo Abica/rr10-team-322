@@ -9,8 +9,8 @@ class Account
     first( :uuid => uuid )
   end
 
-  has 1, :backlog
-  has n, :card_walls
+  has 1, :backlog, :constraint => :destroy
+  has n, :card_walls, :constraint => :destroy
   has n, :swim_lanes, :through => :card_walls
   has n, :cards, :through => :card_walls
 end
@@ -24,7 +24,7 @@ class CardWall
   property :created_at, DateTime, :default => lambda { Time.now }
 
   belongs_to :account
-  has n, :swim_lanes
+  has n, :swim_lanes, :constraint => :destroy
   has n, :cards, :through => :swim_lanes
 end
 
@@ -37,7 +37,7 @@ class Backlog
   property :created_at, DateTime, :default => lambda { Time.now }
 
   belongs_to :account
-  has n, :cards
+  has n, :cards, :constraint => :destroy
 end
 
 class SwimLane
@@ -49,7 +49,7 @@ class SwimLane
   property :description, Text
   property :created_at, DateTime, :default => lambda { Time.now }
 
-  has n, :cards
+  has n, :cards, :constraint => :destroy
 end
 
 class Card
@@ -57,7 +57,7 @@ class Card
   PRIORITIES = { :regular => 0, :expedited => 1 }
 
   property :id, Serial
-  property :description, String
+  property :description, Text, :length => 0..140
   property :estimate, Integer
   property :priority, Integer, :default => PRIORITIES[ :regular ]
   property :created_at, DateTime, :default => lambda { Time.now }

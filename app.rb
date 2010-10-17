@@ -237,6 +237,6 @@ end
   get '/:uuid' do
     @account = Account.by_uuid( params[ :uuid ] )
     @backlog = @account.backlog
-    @card_wall = @account.card_walls.first or []
+    @card_wall = @account.card_walls.first || []
     haml :sandbox, :layout => true
   end
