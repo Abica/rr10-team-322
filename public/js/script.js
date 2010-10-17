@@ -80,7 +80,7 @@ $(function() {
     });
     $('.card-new .cancel').click($.fancybox.close);
     $('.card-new .save').click(function() {
-        var description = $('.card-new .description').val());
+        var description = $('.card-new .description').val();
         // TODO: ajax
         var el = $("<div/>").addClass("card")
                             .html(description);
