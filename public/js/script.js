@@ -57,6 +57,9 @@ $(function() {
     /** end drag drop */
 
     /** sprint management */
+    $('nav button:not(.add)').live('click', function() {
+        window.location = '/'+UUID+'/show/'+extractId(this);
+    });
     $('nav .add').live('click', function() {
         $.fancybox($('.sprint-new'));
     });
