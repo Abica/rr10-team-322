@@ -1,6 +1,6 @@
 $(function() {
     $('tr td:last-child, tr th:last-child').addClass('last');
-     
+
     /** drag drop */
     dragOptions = {
         revert: 'invalid',
@@ -80,14 +80,15 @@ $(function() {
     });
     $('.card-new .cancel').click($.fancybox.close);
     $('.card-new .save').click(function() {
+        var description = $('.card-new .description').val());
         // TODO: ajax
         var el = $("<div/>").addClass("card")
-                            .html($('.card-new .description').val());
+                            .html(description);
         $('#backlog .backlog-box').append(el);
         $.fancybox.close();
     });
     /** end backlog */
- 
+
     $('.card').live('click', function() {
         var el = $(this);
         $.fancybox($('.card-detail'));
@@ -100,7 +101,7 @@ $(function() {
         $('.card-detail .delete').unbind('click').click(function() {
             // TODO: ajax
             el.fadeOut('fast', function() {
-                el.remove(); 
+                el.remove();
             });
             $.fancybox.close();
         });

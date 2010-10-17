@@ -1,0 +1,44 @@
+.about-cardwall.grid_11
+  %h2= @card_wall.name
+  %button.icon.add Add Column
+  %button Remove Sprint
+
+.clear
+#backlog.grid_2
+  %div
+    %button.icon.add Add Card
+  .backlog-box
+    -@backlog.cards.each do |card|
+      .card= card.description
+%table.cardwall.grid_10
+  %thead
+    %tr
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %th
+          %span.lane-title= swim_lane.name
+          %button.icon.delete Delete
+  %tbody
+    %tr.expedited
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %td
+          -swim_lane.cards.expedited.each do |card|
+            .card= card.description
+    %tr.regular
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %td
+          -swim_lane.cards.regular.each do |card|
+            .card= card.description
+
+#skeletons
+  .card-detail.popup
+    %textarea.description
+    %button.save Save
+    %button.delete Delete
+  .card-new.popup
+    %textarea.description
+    %button.save Save
+    %button.cancel Cancel
+  .sprint-new.popup
+    %input.name
+    %button.save Save
+    %button.cancel Cancel

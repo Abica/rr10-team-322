@@ -1,5 +1,6 @@
 %nav
-  %button Sprint 1
-  %button Sprint 2
-  %button.icon.add Add
-  %button.icon.home{:title => "Menu"} Menu
+  -if @account
+    -@account.card_walls.each do |card_wall|
+      %button= card_wall.name
+    %button.icon.add Add
+    %button.icon.home{:title => "Menu"} Menu
