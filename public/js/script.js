@@ -23,6 +23,18 @@ $(function() {
     dropOptions = {
         drop: function(event, ui) {
             var el = $(ui.draggable).clone();
+            var cardId = extractId(el);
+            if (el.hasClass("in-backlog") || /swim-lane/.test($(this).attr("id"))) {
+              var laneId = extractId($(this));
+              var laneStatus = $(this).parents("tr")[0].className;
+
+              $.post("/" + UUID + "/card/" + cardId + "/to-swim-lane/" + laneId + "/" + laneStatus);
+              el.removeClass('in-swim-lane').addClass('in-backlog');
+            } else {
+              $.post("/" + UUID + "/card/" + cardId + "/to-backlog");
+              el.removeClass('in-backlog').addClass('in-swim-lane');
+            }
+
             $(this).append(el);
             el.removeClass('ui-draggable-dragging')
               .removeClass('ui-draggable')
@@ -32,6 +44,7 @@ $(function() {
               .css('width', 'auto')
               .draggable(dragOptions);
             $(ui.draggable).remove();
+            console.log("SDSDDS");
         }
     };
     $('.card').live('mouseover', function() {

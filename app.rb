@@ -183,6 +183,35 @@ end
     json card
   end
 
+  # send card to swim lane
+  post '/:uuid/card/:card_id/to-swim-lane/:swim_lane_id/:priority' do
+    content_type :json
+
+    account = Account.by_uuid( params[ :uuid ] )
+    swim_lane = account.swim_lanes.get( params[ :swim_lane_id ] )
+    card = Card.get( params[ :card_id ] )
+
+    card.priority = Card::PRIORITIES[ params[ :priority ].to_sym ] || 0
+    card.swim_lane = swim_lane
+    card.backlog = nil
+    card.save
+
+    json card
+  end
+
+  # send card to backlog
+  post '/:uuid/card/:card_id/to-backlog' do
+    content_type :json
+
+    account = Account.by_uuid( params[ :uuid ] )
+    card = account.cards.get( params[ :card_id ] )
+    card.swim_lane = nil
+    card.backlog = account.backlog
+    card.save
+
+    json card
+  end
+
   # delete card
   delete '/:uuid/card/:id' do
     content_type :json
@@ -202,10 +231,6 @@ end
   get '/main.css' do
     content_type 'text/css', :charset => 'utf-8'
     sass :stylesheet, :syntax => :scss
-  end
-
-  get '/test' do
-    redirect "/"
   end
 
   # show sandbox

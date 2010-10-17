@@ -9,25 +9,25 @@
     %button.icon.add Add Card
   .backlog-box
     -@backlog.cards.each do |card|
-      .card= card.description
+      .card.in-backlog{:id => "card-#{ card.id }"}= card.description
 %table.cardwall.grid_10
   %thead
     %tr
       -@card_wall.swim_lanes.each do |swim_lane|
-        %th{:id => "swim-lane-#{ swim_lane.id }"}
+        %th{:id => "header-swim-lane-#{ swim_lane.id }"}
           %span.lane-title= swim_lane.name
           %button.icon.delete Delete
   %tbody
     %tr.expedited
       -@card_wall.swim_lanes.each do |swim_lane|
-        %td
+        %td{:id => "expedited-swim-lane-#{ swim_lane.id }"}
           -swim_lane.cards.expedited.each do |card|
-            .card= card.description
+            .card.in-swim-lane{:id => "card-#{ card.id }"}= card.description
     %tr.regular
       -@card_wall.swim_lanes.each do |swim_lane|
-        %td
+        %td{:id => "regular-swim-lane-#{ swim_lane.id }"}
           -swim_lane.cards.regular.each do |card|
-            .card= card.description
+            .card.in-swim-lane{:id => "card-#{ card.id }"}= card.description
 
 #skeletons
   .card-detail.popup
