@@ -130,24 +130,22 @@ end
   end
 
   # update swim lane
-  post '/:uuid/sprint/:sprint_id/swim_lane/:id' do
+  post '/:uuid/swim_lane/:id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :id ] )
+    swim_lane = account.swim_lanes.get( params[ :id ] )
     swim_lane.update( params[ :swim_lane ] )
 
-    json lane
+    json swim_lane
   end
 
   # delete swim lane
-  delete '/:uuid/sprint/:sprint_id/swim_lane/:id' do
+  delete '/:uuid/swim_lane/:id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :id ] )
+    swim_lane = account.swim_lanes.get( params[ :id ] )
 
     json swim_lane.destroy
   end

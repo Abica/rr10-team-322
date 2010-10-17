@@ -14,7 +14,7 @@
   %thead
     %tr
       -@card_wall.swim_lanes.each do |swim_lane|
-        %th
+        %th{:id => "swim-lane-#{ swim_lane.id }"}
           %span.lane-title= swim_lane.name
           %button.icon.delete Delete
   %tbody

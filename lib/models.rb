@@ -11,6 +11,7 @@ class Account
 
   has 1, :backlog
   has n, :card_walls
+  has n, :swim_lanes, :through => :card_walls
   has n, :cards, :through => :card_walls
 end
 

@@ -1,6 +1,10 @@
 $(function() {
     var UUID = location.pathname.match(/\/([^\/]+)/)[1];
 
+    function extractId(el) {
+      return el.attr("id").match(/-(\d+)$/)[1];
+    }
+
     $('tr td:last-child, tr th:last-child').addClass('last');
 
     /** drag drop */
@@ -70,9 +74,12 @@ $(function() {
         el.focus();
     });
     $('.lane-title-edit').live('blur', function() {
-        // TODO: ajax
+        var name = $(this).val();
+        var laneId = extractId($(this).parent());
+
+        $.post("/" + UUID + "/swim_lane/" + laneId, {swim_lane: {name: name}});
         $(this).replaceWith(
-            $('<span/>').addClass('lane-title').html($(this).val())
+            $('<span/>').addClass('lane-title').html(name)
         );
     });
     /** end lane management */
