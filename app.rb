@@ -7,21 +7,21 @@ require 'dm-sqlite-adapter'
 require 'uuidtools'
 
 require 'lib/models'
-require 'pp'
 
 configure do
   set :sessions , true
+  set :show_exceptions , false
 
-  DataMapper::Logger.new($stdout, :debug)
   DataMapper.setup( :default , "sqlite3://#{Dir.pwd}/development.sqlite3" )
   DataMapper.finalize
-  DataMapper.auto_upgrade!
-end
+  #DataMapper.auto_upgrade!
+  not_found do
+    haml :'404'
+  end
 
-error do
-  e = request.env['sinatra.error']
-  Kernel.puts e.backtrace.join("\n")
-  'Application error'
+  error do
+    haml :'500'
+  end
 end
 
 helpers do
