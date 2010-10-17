@@ -32,6 +32,7 @@ end
 
 
 # ACCOUNTS
+  # create account
   post '/account' do
     account = Account.create(
       :uuid => UUIDTools::UUID.random_create,
@@ -63,6 +64,7 @@ end
   end
 
 # SPRINTS
+  # get sprint
   get '/:uuid/sprint/:id' do
     content_type :json
 
@@ -72,6 +74,7 @@ end
     json card_wall
   end
 
+  # create sprint
   post '/:uuid/sprint' do
     content_type :json
     account = Account.by_uuid( params[ :uuid ] )
@@ -80,6 +83,7 @@ end
     json card_wall
   end
 
+  # update sprint
   post '/:uuid/sprint/:id' do
     content_type :json
 
@@ -90,6 +94,7 @@ end
     json card_wall
   end
 
+  # delete sprint
   delete '/:uuid/sprint/:id' do
     content_type :json
 
@@ -102,6 +107,7 @@ end
 
 
 # SWIM LANES
+  # get swim lane
   get '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id' do
     content_type :json
 
@@ -112,6 +118,7 @@ end
     json swim_lane
   end
 
+  # create swim lane
   post '/:uuid/sprint/:id/swim_lane' do
     content_type :json
 
@@ -122,6 +129,7 @@ end
     json swim_lane
   end
 
+  # update swim lane
   post '/:uuid/sprint/:sprint_id/swim_lane/:id' do
     content_type :json
 
@@ -133,6 +141,7 @@ end
     json lane
   end
 
+  # delete swim lane
   delete '/:uuid/sprint/:sprint_id/swim_lane/:id' do
     content_type :json
 
@@ -144,6 +153,7 @@ end
   end
 
 # CARD
+  # get card
   get '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:id' do
     content_type :json
 
@@ -155,7 +165,20 @@ end
     json card
   end
 
-  post '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
+  # new card
+  post '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card' do
+    content_type :json
+
+    account = Account.by_uuid( params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
+    card = swim_lane.cards.create( params[ :card ] )
+
+    json card
+  end
+
+  # update card
+  post '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:card_id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
@@ -167,18 +190,8 @@ end
     json card
   end
 
-  post '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card' do
-    content_type :json
-
-    account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
-    card = swim_lane.cards.create( params[ :card ] )
-
-    json card
-  end
-
-  delete '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card/:id' do
+  # delete card
+  delete '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
@@ -204,6 +217,7 @@ end
     redirect "/"
   end
 
+  # show sandbox
   get '/:uuid' do
     @account = Account.by_uuid( params[ :uuid ] )
     @backlog = @account.backlog
