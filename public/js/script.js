@@ -24,6 +24,11 @@ $(function() {
     /** end drag drop */
 
     /** lane management */
+    $('.about-cardwall .add').live('click', function() {
+        var el = $("<th><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
+        $('.cardwall tr:first').prepend(el);
+        $('.cardwall tr:not(:first)').prepend("<td/>");
+    });
     $('.cardwall th .delete').live('click', function() {
         var col = 0;
         var column = $(this).parent()[0];
