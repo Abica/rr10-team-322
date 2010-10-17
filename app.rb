@@ -40,10 +40,11 @@ end
       :backlog => Backlog.create )
     backlog = account.backlog
     backlog.cards.create( :description => "I am a card in the backlog" )
+    backlog.cards.create( :description => "Cards are draggable" )
     backlog.cards.create( :description => "New cards get added to the backlog" )
     backlog.cards.create( :description => "The backlog is visible across sprints" )
 
-    card_wall = account.card_walls.create( :name => "Sprint 1" )
+    card_wall = account.card_walls.create( :name => "Example Sprint" )
 
     free_cards = card_wall.swim_lanes.create( :name => "Free Cards" )
     free_cards.cards.create( :description => "This lane is for expedited cards", :priority => Card::PRIORITIES[ :expedited ] )
