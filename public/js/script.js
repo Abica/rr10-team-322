@@ -12,12 +12,26 @@ $(function() {
         revert: 'invalid',
         helper: function(e) {
             var el = $(e.target);
+            if(el.hasClass('content')) {
+                 el = el.parent();
+            }
             el.css('left', el.offset().left)
               .css('top', el.offset().top)
               .width(el.width())
               .css('position', 'absolute')
 
             return el;
+        },
+        stop: function(e, ui) {
+            var el = $(ui.draggable);
+            el.removeClass('ui-draggable-dragging')
+                      .removeClass('ui-draggable')
+                      .css('top', 'auto')
+                      .css('left', 'auto')
+                      .css('position', 'relative')
+                      .css('width', 'auto')
+                      .draggable(dragOptions);
+         
         }
     };
     dropOptions = {
@@ -43,7 +57,7 @@ $(function() {
               .removeClass('ui-draggable')
               .css('top', 'auto')
               .css('left', 'auto')
-              .css('position', 'static')
+              .css('position', 'relative')
               .css('width', 'auto')
               .draggable(dragOptions);
             $(ui.draggable).remove();
@@ -155,12 +169,16 @@ $(function() {
     /** Backlog management */
     $('#backlog .add').live('click', function() {
         $.fancybox($('.card-new'));
+        $('.card-new textarea').focus();
     });
     $('.card-new .cancel').click($.fancybox.close);
     $('.card-new .save').click(function() {
         var description = $('.card-new .description').val();
-        var el = $("<div/>").addClass("card")
-                            .html(description);
+        var el = $("<div class='card'></div>").append(
+                $("<button class='card_delete'>Delete</button>")
+            ).append(
+                $("<div class='content'></div>").html(description)
+            );
         $('#backlog .backlog-box').append(el);
         $.post("/" + UUID + "/card", {card: {description: description}});
 
@@ -168,23 +186,25 @@ $(function() {
     });
     /** end backlog */
 
-    $('.card').live('click', function() {
-        var el = $(this);
+
+    $('.card button').live('click', function() {
+        var el = $(this).parent();
         var cardId = extractId(el);
-        $.fancybox($('.card-detail'));
-        $('.card-detail .description').val(el.html());
-        $('.card-detail .save').unbind('click').click(function() {
-            var description = $('.card-detail .description').val();
-            el.html(description);
-            $.post("/" + UUID + "/card/" + cardId, {card: {description: description}});
-            $.fancybox.close();
+        $.ajax({ type: "DELETE", url: "/" + UUID + "/card/" + cardId });
+        el.fadeOut('fast', function() {
+            el.remove();
         });
-        $('.card-detail .delete').unbind('click').click(function() {
-            $.ajax({ type: "DELETE", url: "/" + UUID + "/card/" + cardId });
-            el.fadeOut('fast', function() {
-                el.remove();
-            });
-            $.fancybox.close();
-        });
+    });
+    $('.card textarea').live('blur', function() {
+        var cardId = extractId($(this).parent().parent());
+        var description = $(this).val();
+        $.post("/" + UUID + "/card/" + cardId, {card: {description: description}});
+        $(this).parent().html(description);
+    });
+    $('.card .content').live('click', function() {
+        var el = $(this);
+        var text = $("<textarea></textarea>").val(el.html());
+        el.html(text);
+        text.focus().select();
     });
 });

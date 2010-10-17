@@ -4,13 +4,15 @@
   %button.remove Remove Sprint
 
 .clear
-#backlog.grid_2
+#backlog.grid_3
   %div
     %button.icon.add Add Card
   .backlog-box
     -@backlog.cards.each do |card|
-      .card.in-backlog{:id => "card-#{ card.id }"}= card.description
-%table.cardwall.grid_10
+      .card.in-backlog{:id => "card-#{ card.id }"}
+        %button.card_delete Delete
+        .content= card.description
+%table.cardwall.grid_9
   %thead
     %tr
       -@card_wall.swim_lanes.each do |swim_lane|
@@ -22,18 +24,18 @@
       -@card_wall.swim_lanes.each do |swim_lane|
         %td{:id => "expedited-swim-lane-#{ swim_lane.id }"}
           -swim_lane.cards.expedited.each do |card|
-            .card.in-swim-lane{:id => "card-#{ card.id }"}= card.description
+            .card.in-swim-lane{:id => "card-#{ card.id }"}
+              %button.card_delete Delete
+              .content= card.description
     %tr.regular
       -@card_wall.swim_lanes.each do |swim_lane|
         %td{:id => "regular-swim-lane-#{ swim_lane.id }"}
           -swim_lane.cards.regular.each do |card|
-            .card.in-swim-lane{:id => "card-#{ card.id }"}= card.description
+            .card.in-swim-lane{:id => "card-#{ card.id }"}
+              %button.card_delete Delete
+              .content= card.description
 
 #skeletons
-  .card-detail.popup
-    %textarea.description{:maxlength => 140}
-    %button.save Save
-    %button.delete Delete
   .card-new.popup
     %textarea.description{:maxlength => 140}
     %button.save Save
