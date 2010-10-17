@@ -11,6 +11,8 @@ class Account
 
   has 1, :backlog
   has n, :card_walls
+  has n, :swim_lanes, :through => :card_walls
+  has n, :cards, :through => :card_walls
 end
 
 class CardWall
@@ -23,6 +25,7 @@ class CardWall
 
   belongs_to :account
   has n, :swim_lanes
+  has n, :cards, :through => :swim_lanes
 end
 
 class Backlog
