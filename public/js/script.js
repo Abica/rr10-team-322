@@ -4,6 +4,15 @@ $(function() {
     /** drag drop */
     dragOptions = {
         revert: 'invalid',
+        helper: function(e) {
+            var el = $(e.target);
+            el.css('left', el.offset().left)
+              .css('top', el.offset().top)
+              .width(el.width())
+              .css('position', 'absolute')
+
+            return el;
+        }
     };
     dropOptions = {
         drop: function(event, ui) {
@@ -11,9 +20,10 @@ $(function() {
             $(this).append(el);
             el.removeClass('ui-draggable-dragging')
               .removeClass('ui-draggable')
-              .css('top', 0)
-              .css('left', 0)
+              .css('top', 'auto')
+              .css('left', 'auto')
               .css('position', 'static')
+              .css('width', 'auto')
               .draggable(dragOptions);
             $(ui.draggable).remove();
         }
