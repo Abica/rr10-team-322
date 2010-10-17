@@ -2,7 +2,7 @@ $(function() {
     var UUID = location.pathname.match(/\/([^\/]+)/)[1];
 
     function extractId(el) {
-      return (el.attr("id").match(/-(\d+)$/) || [])[1];
+      return ($(el).attr("id").match(/-(\d+)$/) || [])[1];
     }
 
     $('tr td:last-child, tr th:last-child').addClass('last');
@@ -71,10 +71,24 @@ $(function() {
 
     /** lane management */
     $('.about-cardwall .add').live('click', function() {
-        var el = $("<th><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
-        $('.cardwall tr:first').prepend(el);
-        $('.cardwall tr:not(:first)').prepend("<td/>").droppable(dropOptions);
-        el.droppable(dropOptions);
+        var sprint_id = extractId('.about-cardwall');
+        var position = $('.cardwall tr th').length-1;
+        var post = { swim_lane : {
+            name: "New Lane",
+            description: "",
+            position: position
+        }};
+        $.post('/'+UUID+'/sprint/'+sprint_id+'/swim_lane', post,
+        function(data) {
+            
+            var el = $("<th id='header-swim-lane-"+data.id+"'><span class='lane-title'>New Lane</span><button class='icon delete'>Delete</button></th>");
+            $('.cardwall tr:first').append(el);
+            $('.cardwall tr:not(:first)').append("<td/>").droppable(dropOptions);
+            $(window).scrollLeft(9999);
+            el.droppable(dropOptions);
+            $('tr td, tr th').removeClass('last');
+            $('tr td:last-child, tr th:last-child').addClass('last');
+        });
     });
     $('.cardwall th .delete').live('click', function() {
         var col = 0;

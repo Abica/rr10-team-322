@@ -119,7 +119,7 @@ end
   end
 
   # create swim lane
-  post '/:uuid/sprint/:id/swim_lane' do
+  post '/:uuid/sprint/:sprint_id/swim_lane' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
