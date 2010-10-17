@@ -53,6 +53,10 @@ $(function() {
     $('.cardwall th .delete').live('click', function() {
         var col = 0;
         var column = $(this).parent()[0];
+        var laneId = extractId($(this).parent());
+
+        $.ajax({ type: "DELETE", url: "/" + UUID + "/swim_lane/" + laneId });
+
         $('.cardwall th').each(function(i, el) {
             console.debug(el);
             console.debug(column);
