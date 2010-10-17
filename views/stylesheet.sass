@@ -17,6 +17,7 @@ header {
   }
 }
 footer {
+  clear: both;
   text-align: center;
   font-size: 0.8em;
   padding-top: 2em;
@@ -34,14 +35,14 @@ h1 {
 button {
     font-family: Junction;
     border: none;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px dotted #666;
     padding: 0.5em 0.5em 0.2em 0.5em;
     background: #F0F0F0;
     font-size: 1.1em;
 }
 button:hover {
   cursor: pointer;
-  border-bottom: 2px solid #000;
+  border-bottom: 1px solid #000;
   background-color: #FFF !important;
 }
 button::-moz-focus-inner {
@@ -85,16 +86,16 @@ button.home {
   .lane-title {
     cursor: pointer;
   }
-  .card {
-    background: #FF8;
-    border: 1px solid #FF0;
-    padding: 0.5em;
-    margin-top: 1em;
-    -webkit-transform: rotate(1deg);
-    -moz-transform: rotate(1deg);
-    width: 80%;
-    cursor: pointer; 
-  }
+}
+.card {
+  background: #FF8;
+  border: 1px solid #FF0;
+  padding: 0.5em;
+  margin-top: 1em;
+  -webkit-transform: rotate(1deg);
+  -moz-transform: rotate(1deg);
+  width: 80%;
+  cursor: pointer; 
 }
 .card-detail {
   .description {
@@ -105,6 +106,12 @@ button.home {
     height: 20em;
   }
   text-align: right;
+}
+#backlog {
+  background: #FAFAFA;
+  .backlog-box {
+    min-hjeight: 75px;
+  }
 }
 #skeletons {
   display: none;

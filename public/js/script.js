@@ -7,7 +7,7 @@ $(function() {
     $('.card').live('mouseover', function() {
         $(this).draggable(dragOptions);
     });
-    $('.cardwall td').droppable({
+    $('.cardwall td, .backlog-box').droppable({
         drop: function(event, ui) {
             var el = $(ui.draggable).clone();
             $(this).append(el);
