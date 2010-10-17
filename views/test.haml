@@ -1,6 +1,6 @@
 .about-cardwall.grid_11
-  %h2 Sprint 1
-  %button.icon.add Add Column 
+  %h2= @card_wall.name
+  %button.icon.add Add Column
   %button Remove Sprint
 
 .clear
@@ -12,42 +12,21 @@
 %table.cardwall.grid_10
   %thead
     %tr
-      %th 
-        %span.lane-title Free Cards
-        %button.icon.delete Delete
-      %th 
-        %span.lane-title Define Acceptance
-        %button.icon.delete Delete
-      %th 
-        %span.lane-title Development
-        %button.icon.delete Delete
-      %th 
-        %span.lane-title Test
-        %button.icon.delete Delete
-      %th 
-        %span.lane-title Deploy
-        %button.icon.delete Delete
-      %th 
-        %span.lane-title Completed
-        %button.icon.delete Delete
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %th
+          %span.lane-title= swim_lane.name
+          %button.icon.delete Delete
   %tbody
     %tr.expedited
-      %td
-        .card This is a card. What do I do with it?
-        .card This is a card. What do I do with it?nerrr
-      %td
-      %td
-        .card This is a card. What do I do with it?asdasd
-      %td
-      %td
-      %td
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %td
+          -swim_lane.cards.expedited do |card|
+            .card= card.description
     %tr.regular
-      %td
-      %td
-      %td
-      %td
-      %td
-      %td
+      -@card_wall.swim_lanes.each do |swim_lane|
+        %td
+          -swim_lane.cards.regular do |card|
+            .card= card.description
 
 #skeletons
   .card-detail.popup
