@@ -2,8 +2,11 @@ require 'sinatra'
 require 'haml'
 require 'sass'
 require 'json'
-require 'sqlite3'
 require 'datamapper'
+require 'dm-sqlite-adapter'
+require 'uuidtools'
+
+require 'lib/models'
 require 'pp'
 
 configure do
@@ -21,194 +24,167 @@ error do
   'Application error'
 end
 
-module OhKanban
-  module Models
-    class Company
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :name, String
-
-      has n, :teams
-    end
-
-    class Team
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :name, String
-
-      belongs_to :company
-      has n, :users, :through => Resource
-      has n, :card_walls
-    end
-
-    class User
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :email, String
-
-      has n, :teams, :through => Resource
-      has n, :cards, :through => Resource
-      has n, :card_walls
-      has n, :comments
-    end
-
-    class CardWall
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :name, String
-      property :description, Text
-      property :created_at, DateTime
-
-      has n, :belongs_to, :teams
-      has n, :swim_lanes
-    end
-
-    class SwimLane
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :position, Integer
-      property :name, String
-      property :description, Text
-      property :created_at, DateTime
-
-      has n, :cards
-    end
-
-    class Card
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :description, String
-      property :estimate, Integer
-      property :created_at, DateTime
-
-      belongs_to :swim_lane
-      has n, :comments
-      has n, :users, :through => Resource
-    end
-
-    class Comment
-      include DataMapper::Resource
-
-      property :id, Serial
-      property :body, Text
-      property :created_at, DateTime
-
-      belongs_to :user
-      belongs_to :card
-    end
-  end
-end
-
-include OhKanban::Models
-
 helpers do
-  def comment
-    { :id => 1, :text => "This is something" }
-  end
-
-  def card
-    { :id => 1, :description => "sanitize input", :estimate => 2, :comments => [ comment ] }
-  end
-
-  def lane
-    { :id => 1, :name => "QA", :description => "This lane is for cards that need qa", :cards => [ card ] }
-  end
-
-  def sprint
-    { :id => 1, :name => "Sprint 432", :swim_lanes => [ lane ] }
-  end
-
   def json( obj )
     obj.to_json
   end
 end
 
-get '/' do
-  haml :index, :layout => true
-end
+
+# ACCOUNTS
+  post '/account' do
+    account = Account.new( :uuid => UUIDTools::UUID.random_create, :email => params[ :email ] )
+
+    if account.save
+      redirect "/#{ account.uuid }"
+    else
+      redirect "/"
+    end
+  end
 
 # SPRINTS
-get '/sprint/:id' do
-  content_type :json
+  get '/:uuid/sprint/:id' do
+    content_type :json
 
-  json sprint
-end
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :id ] )
 
-post '/sprint/:id' do
-  content_type :json
+    json card_wall
+  end
 
-  json sprint
-end
+  post '/:uuid/sprint' do
+    content_type :json
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.create( params[ :sprint ] )
 
-post '/sprint/new' do
-  content_type :json
+    json card_wall
+  end
 
-  json sprint
-end
+  post '/:uuid/sprint/:id' do
+    content_type :json
+
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :id ] )
+    card_wall.update( params[ :sprint ] )
+
+    json card_wall
+  end
+
+  delete '/:uuid/sprint/:id' do
+    content_type :json
+
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :id ] )
+
+    json card_wall.destroy
+  end
+
+
 
 # SWIM LANES
-get '/sprint/:id/swim_lane/:swim_lane_id' do
-  content_type :json
+  get '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id' do
+    content_type :json
 
-  json lane
-end
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :id ] )
 
-post '/sprint/:id/swim_lane/:swim_lane_id' do
-  content_type :json
+    json swim_lane
+  end
 
-  json lane
-end
+  post '/:uuid/sprint/:id/swim_lane' do
+    content_type :json
 
-post '/sprint/:id/swim_lane/new' do
-  content_type :json
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.create( params[ :swim_lane ] )
 
-  json lane
-end
+    json swim_lane
+  end
+
+  post '/:uuid/sprint/:sprint_id/swim_lane/:id' do
+    content_type :json
+
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :id ] )
+    swim_lane.update( params[ :swim_lane ] )
+
+    json lane
+  end
+
+  delete '/:uuid/sprint/:sprint_id/swim_lane/:id' do
+    content_type :json
+
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :id ] )
+
+    json swim_lane.destroy
+  end
 
 
 # CARD
-get '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
-  content_type :json
+  get '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:id' do
+    content_type :json
 
-  json card
-end
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
+    card = swim_lane.cards.get( params[ :id ] )
 
-post '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
-  content_type :json
+    json card
+  end
 
-  json card
-end
+  post '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card/:card_id' do
+    content_type :json
 
-post '/sprint/:id/swim_lane/:swim_lane_id/card/new' do
-  content_type :json
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
+    card = swim_lane.cards.get( params[ :id ] )
+    card.update( params[ :card ] )
 
-  json card
-end
+    json card
+  end
 
-# COMMENTS
-get '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments' do
-  content_type :json
+  post '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card' do
+    content_type :json
 
-  json [ comment ]
-end
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
+    card = swim_lane.cards.create( params[ :card ] )
 
-post '/sprint/:id/swim_lane/:swim_lane_id/card/:card_id/comments/new' do
-  content_type :json
+    json card
+  end
 
-  json comment
-end
+  delete '/:uuid/sprint/:id/swim_lane/:swim_lane_id/card/:id' do
+    content_type :json
 
-get '/main.css' do
-  content_type 'text/css', :charset => 'utf-8'
-  sass :stylesheet, :syntax => :scss
-end
+    account = Account.first( :uuid => params[ :uuid ] )
+    card_wall = account.card_walls.get( params[ :sprint_id ] )
+    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
+    card = swim_lane.cards.get( params[ :id ] )
 
-get '/test' do
-  haml :test, :layout => true
-end
+    json card.destroy
+  end
+
+
+# DEFAULT ROUTES
+  get '/' do
+    haml :index, :layout => true
+  end
+
+  get '/main.css' do
+    content_type 'text/css', :charset => 'utf-8'
+    sass :stylesheet, :syntax => :scss
+  end
+
+  get '/test' do
+    haml :test, :layout => true
+  end
+
+  get '/:uuid' do
+    haml :test, :layout => true
+  end
