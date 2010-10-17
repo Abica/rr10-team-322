@@ -1,4 +1,6 @@
 $(function() {
+    var UUID = location.pathname.match(/\/([^\/]+)/)[1];
+
     $('tr td:last-child, tr th:last-child').addClass('last');
 
     /** drag drop */
@@ -81,7 +83,8 @@ $(function() {
     $('.card-new .cancel').click($.fancybox.close);
     $('.card-new .save').click(function() {
         var description = $('.card-new .description').val();
-        // TODO: ajax
+        $.post("/" + UUID + "/card", {card: {description: description}});
+
         var el = $("<div/>").addClass("card")
                             .html(description);
         $('#backlog .backlog-box').append(el);
