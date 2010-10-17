@@ -2,7 +2,7 @@ $(function() {
     var UUID = location.pathname.match(/\/([^\/]+)/)[1];
 
     function extractId(el) {
-      return el.attr("id").match(/-(\d+)$/)[1];
+      return (el.attr("id").match(/-(\d+)$/) || [])[1];
     }
 
     $('tr td:last-child, tr th:last-child').addClass('last');
@@ -26,10 +26,13 @@ $(function() {
             var cardId = extractId(el);
             if (el.hasClass("in-backlog") || /swim-lane/.test($(this).attr("id"))) {
               var laneId = extractId($(this));
-              var laneStatus = $(this).parents("tr")[0].className;
+              var parentTr = $(this).parents("tr")[0];
+              if (parentTr) {
+                var laneStatus = parentTr.className;
 
-              $.post("/" + UUID + "/card/" + cardId + "/to-swim-lane/" + laneId + "/" + laneStatus);
-              el.removeClass('in-swim-lane').addClass('in-backlog');
+                $.post("/" + UUID + "/card/" + cardId + "/to-swim-lane/" + laneId + "/" + laneStatus);
+                el.removeClass('in-swim-lane').addClass('in-backlog');
+              }
             } else {
               $.post("/" + UUID + "/card/" + cardId + "/to-backlog");
               el.removeClass('in-backlog').addClass('in-swim-lane');

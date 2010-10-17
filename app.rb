@@ -40,7 +40,7 @@ end
       :backlog => Backlog.create )
     backlog = account.backlog
     backlog.cards.create( :description => "I am a card in the backlog" )
-    backlog.cards.create( :description => "New cards are added to the backlog" )
+    backlog.cards.create( :description => "New cards get added to the backlog" )
     backlog.cards.create( :description => "The backlog is visible across sprints" )
 
     card_wall = account.card_walls.create( :name => "Sprint 1" )
