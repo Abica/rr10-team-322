@@ -1,6 +1,7 @@
 $(function() {
     $('tr td:last-child, tr th:last-child').addClass('last');
      
+    /** drag drop */
     dragOptions = {
         revert: 'invalid',
     };
@@ -20,7 +21,25 @@ $(function() {
             $(ui.draggable).remove();
         }
     });
+    /** end drag drop */
 
+    /** lane management */
+    $('.cardwall th .delete').live('click', function() {
+        var col = 0;
+        var column = $(this).parent()[0];
+        $('.cardwall th').each(function(i, el) {
+            console.debug(el);
+            console.debug(column);
+            if(el == column) {
+                col = i+1;
+                return false;
+            }
+        });
+        $(column).fadeOut('fast', function() {
+            $('.cardwall tr td:nth-child('+col+'), .cardwall tr th:nth-child('+col+')').remove();
+            $('tr td:last-child, tr th:last-child').addClass('last');
+        });
+    });
     $('.lane-title').live('click', function() {
         var el = $('<input/>').attr('type', 'text')
                      .addClass('lane-title-edit')
@@ -31,9 +50,10 @@ $(function() {
     $('.lane-title-edit').live('blur', function() {
         // TODO: ajax
         $(this).replaceWith(
-            $('<div/>').addClass('lane-title').html($(this).val())
+            $('<span/>').addClass('lane-title').html($(this).val())
         );
     });
+    /** end lane management */
     /** Backlog management */
     $('#backlog .add').live('click', function() {
         $.fancybox($('.card-new'));
