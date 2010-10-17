@@ -61,6 +61,16 @@ $(function() {
     });
     $('nav .add').live('click', function() {
         $.fancybox($('.sprint-new'));
+        $('.sprint-new input').focus();
+    });
+    $('.about-cardwall .remove').live('click', function() {
+        $.ajax({ 
+            type: "DELETE", 
+            url: "/" + UUID + "/sprint/" + extractId('.about-cardwall'),
+            success: function(data) {
+                window.location = '/'+UUID;
+            }
+        });
     });
     $('.sprint-new .save').click(function() {
         var post = { sprint: {
