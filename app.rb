@@ -33,15 +33,31 @@ end
 
 # ACCOUNTS
   post '/account' do
-    account = Account.create( :uuid => UUIDTools::UUID.random_create, :email => params[ :email ] )
-    account.backlog = Backlog.create
+    account = Account.create(
+      :uuid => UUIDTools::UUID.random_create,
+      :email => params[ :email ],
+      :backlog => Backlog.create )
+    backlog = account.backlog
+    backlog.cards.create( :description => "I am a card in the backlog" )
+    backlog.cards.create( :description => "New cards are added to the backlog" )
+    backlog.cards.create( :description => "Move cards into an out of the current sprint" )
+
     card_wall = account.card_walls.create( :name => "Sprint 1" )
-    card_wall.swim_lanes.create( :name => "Free Cards" )
+
+    free_cards = card_wall.swim_lanes.create( :name => "Free Cards" )
+    free_cards.cards.create( :description => "This lane is for expedited cards", :priority => Card::PRIORITIES[ :expedited ] )
+    free_cards.cards.create( :description => "A card represents a task in 1 sentence" )
+
     card_wall.swim_lanes.create( :name => "Define Acceptance" )
-    card_wall.swim_lanes.create( :name => "Development" )
+    development = card_wall.swim_lanes.create( :name => "Development" )
+    development.cards.create( :description => "Cards are moved throughout their life cycle" )
+    development.cards.create( :description => "Touch a card to modify it" )
+
     card_wall.swim_lanes.create( :name => "Test" )
     card_wall.swim_lanes.create( :name => "Deploy" )
-    card_wall.swim_lanes.create( :name => "Completed" )
+
+    completed = card_wall.swim_lanes.create( :name => "Completed" )
+    completed.cards.create( :description => "Only add new cards when a card is completed" )
 
     redirect "/#{ account.uuid }"
   end
@@ -190,6 +206,7 @@ end
 
   get '/:uuid' do
     @account = Account.by_uuid( params[ :uuid ] )
+    @backlog = @account.backlog
     @card_wall = @account.card_walls.first or []
     haml :test, :layout => true
   end

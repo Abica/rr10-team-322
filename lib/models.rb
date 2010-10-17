@@ -56,7 +56,7 @@ class Card
   property :id, Serial
   property :description, String
   property :estimate, Integer
-  property :priority, Integer
+  property :priority, Integer, :default => PRIORITIES[ :regular ]
   property :created_at, DateTime, :default => lambda { Time.now }
 
   belongs_to :swim_lane, :required => false

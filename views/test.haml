@@ -8,7 +8,8 @@
   %div
     %button.icon.add Add Card
   .backlog-box
-    .card A card in the backlog.
+    -@backlog.cards.each do |card|
+      .card= card.description
 %table.cardwall.grid_10
   %thead
     %tr
@@ -20,12 +21,12 @@
     %tr.expedited
       -@card_wall.swim_lanes.each do |swim_lane|
         %td
-          -swim_lane.cards.expedited do |card|
+          -swim_lane.cards.expedited.each do |card|
             .card= card.description
     %tr.regular
       -@card_wall.swim_lanes.each do |swim_lane|
         %td
-          -swim_lane.cards.regular do |card|
+          -swim_lane.cards.regular.each do |card|
             .card= card.description
 
 #skeletons
