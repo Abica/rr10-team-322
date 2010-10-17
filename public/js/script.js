@@ -77,6 +77,11 @@ $(function() {
         $.fancybox($('.sprint-new'));
         $('.sprint-new input').focus();
     });
+    $('.sprint-new input').live('keypress', function(event) {
+        if(event.keyCode == 13) {
+            $('.sprint-new .save').trigger('click');
+        }
+    });
     $('.about-cardwall .remove').live('click', function() {
         $.ajax({ 
             type: "DELETE", 
@@ -155,6 +160,11 @@ $(function() {
                      .val($(this).html())
         $(this).replaceWith(el);
         el.focus();
+    });
+    $('.lane-title-edit').live('keypress', function(event) {
+        if(event.keyCode == 13) {
+            $('.lane-title-edit').trigger('blur');
+        }
     });
     $('.lane-title-edit').live('blur', function() {
         var name = $(this).val();
