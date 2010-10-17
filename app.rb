@@ -154,50 +154,43 @@ end
 
 # CARD
   # get card
-  get '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:id' do
+  get '/:uuid/card/:id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
-    card = swim_lane.cards.get( params[ :id ] )
+    card = account.cards.get( params[ :id ] )
 
     json card
   end
 
   # new card
-  post '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card' do
+  post '/:uuid/card' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
-    card = swim_lane.cards.create( params[ :card ] )
+    backlog = account.backlog
+    card = backlog.cards.create( params[ :card ] )
 
     json card
   end
 
   # update card
-  post '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:card_id' do
+  post '/:uuid/card/:card_id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
-    card = swim_lane.cards.get( params[ :id ] )
+    card = account.cards.get( params[ :id ] )
     card.update( params[ :card ] )
 
     json card
   end
 
   # delete card
-  delete '/:uuid/sprint/:sprint_id/swim_lane/:swim_lane_id/card/:id' do
+  delete '/:uuid/card/:id' do
     content_type :json
 
     account = Account.by_uuid( params[ :uuid ] )
-    card_wall = account.card_walls.get( params[ :sprint_id ] )
-    swim_lane = card_wall.swim_lanes.get( params[ :swim_lane_id ] )
-    card = swim_lane.cards.get( params[ :id ] )
+    card = account.cards.get( params[ :id ] )
 
     json card.destroy
   end
